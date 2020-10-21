@@ -33,7 +33,7 @@ function core(){
 		sketch.newApple(snake);
 	}
 
-	snake.actualize();
+	snake.update();
 	sketch.drawSketch();
 	document.getElementById("info").innerText = "Score: " + snake.score + "\nLives: " + snake.lives;
 
