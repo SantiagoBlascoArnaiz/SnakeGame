@@ -1,0 +1,39 @@
+h1 {
+	color: black;
+	font-family: courier;
+	font-size: 300%;
+	text-align: center;
+}
+
+.container {
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
+
+}
+
+.center {
+	margin: auto;
+	width: 800px;
+	height: 800px;
+	border: 5px solid#000000;
+	display: inline;
+	float: left;
+}
+
+.right {
+	display: inline-block;
+	float: right;
+	margin-right: 20%;
+}
+
+.down {
+	bottom: 0;
+}
+
+.info{
+	margin-left: 10px;
+	font-size: 200%;
+	font-family: courier;
+
+}
