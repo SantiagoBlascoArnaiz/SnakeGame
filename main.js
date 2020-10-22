@@ -4,6 +4,7 @@ console.log(snake);
 
 document.addEventListener("keydown", keyPush);
 sketch.newApple(snake);
+//El juego tiene una tasa de refresco de 20 veces por segundo
 setInterval(core, 1000/20);
 setInterval(clock,1000);
 
@@ -12,6 +13,8 @@ function core(){
 	snake.y = snake.y + snake.yv;
 	console.log(snake.lives);
 
+	//Controla que no se salga del tablero 
+	//conectando los lados opuestos
 	if (snake.x > sketchWidth - 1){
 		snake.x = 0;
 	}
@@ -28,21 +31,27 @@ function core(){
 		snake.y = sketchHeight - 1;
 	}
 
+	//Si la cabeza y la manzana están en la misma posición 
+	//se suma un punto
 	if(snake.x == sketch.apple.x && snake.y == sketch.apple.y){
 		snake.grow();
 		sketch.newApple(snake);
 	}
 
+	//Actualiza las posiciones de la serpiente
 	snake.update();
+	//Redibuja el tablero
 	sketch.drawSketch();
+	//Actualiza la puntuación
 	document.getElementById("info").innerText = "Score: " + snake.score + "\nLives: " + snake.lives;
 
 }
 
-
+//Trata los eventos de pulsacion de teclas
 function keyPush(evt){
 	console.log(evt.keyCode);
 	switch(evt.keyCode){
+		//Movimiento
 		case 87: //w
 			snake.xv = 0;
 			snake.yv = -1;
@@ -61,18 +70,20 @@ function keyPush(evt){
 			break;
 
 
-
+			//Restar una vida
 		case 81: //q
 			snake.death();
 			break;
+			//Sumar un punto
 		case 69: //e
 			snake.grow();
 			break;
+			//Reubicar la manzana
 		case 82: //r
 			sketch.newApple(snake);
 			break;
 
-
+			//Cambiar colores de la serpiente
 		case 49: //1
 			currentColor1 = green1;
 			currentColor2 = green2;
@@ -101,11 +112,13 @@ function keyPush(evt){
 
 }
 
+//Lleva la cuenta del tiempo transcurrido desde que empezó la partida
 function clock(){
 	time++;
 	document.getElementById("clock").innerText = "Time: " + convertTime(time);
 }
 
+//Convierte los segundos indicados a un formato h.m.s.
 function convertTime(time){
 	let h = Math.floor(time/3600);
 	time %= 3600;
