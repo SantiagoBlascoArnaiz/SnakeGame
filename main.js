@@ -3,15 +3,22 @@ var snake = new Snake(0, 0, 0, 0);
 console.log(snake);
 
 document.addEventListener("keydown", keyPush);
+
 sketch.newApple(snake);
 //El juego tiene una tasa de refresco de 20 veces por segundo
 setInterval(core, 1000/20);
 setInterval(clock,1000);
 
 function core(){
+	var gamepad = navigator.getGamepads()[0];
+	if (gamepad != null){
+		gamepadController(gamepad);
+		console.log(gamepad);
+	}
+	
+
 	snake.x = snake.x + snake.xv;
 	snake.y = snake.y + snake.yv;
-	console.log(snake.lives);
 
 	//Controla que no se salga del tablero 
 	//conectando los lados opuestos
@@ -47,24 +54,25 @@ function core(){
 
 }
 
+
 //Trata los eventos de pulsacion de teclas
 function keyPush(evt){
 	console.log(evt.keyCode);
 	switch(evt.keyCode){
 		//Movimiento
-		case 87: //w
+		case 87: //w    button 12
 			snake.xv = 0;
 			snake.yv = -1;
 			break;
-		case 65: //a
+		case 65: //a     button 14
 			snake.xv = -1;
 			snake.yv = 0;
 			break;
-		case 83: //s
+		case 83: //s  button 13
 			snake.xv = 0;
 			snake.yv = 1;
 			break;
-		case 68: //d
+		case 68: //d    button 15
 			snake.xv = 1;
 			snake.yv = 0;
 			break;
@@ -85,26 +93,32 @@ function keyPush(evt){
 
 			//Cambiar colores de la serpiente
 		case 49: //1
+			currentColor = 0;
 			currentColor1 = green1;
 			currentColor2 = green2;
 			break;
 		case 50: //2
+			currentColor = 1;
 			currentColor1 = turqoise1;
 			currentColor2 = turqoise2;
 			break;
 		case 51: //3
+			currentColor = 2;
 			currentColor1 = orange1;
 			currentColor2 = orange2;
 			break;
 		case 52: //4
+			currentColor = 3;
 			currentColor1 = blue1;
 			currentColor2 = blue2;
 			break;
 		case 53: //5
+			currentColor = 4;
 			currentColor1 = purple1;
 			currentColor2 = purple2;
 			break;
 		case 54: //6
+			currentColor = 5;
 			currentColor1 = pink1;
 			currentColor2 = pink2;
 			break;
@@ -112,6 +126,46 @@ function keyPush(evt){
 
 }
 
+function gamepadController(gamepad){
+
+	if(gamepad.buttons[12].pressed || (gamepad.axes[1] < -0.3)){	//Flecha arriba   axes 1
+		snake.xv = 0;
+		snake.yv = -1;
+	}else if(gamepad.buttons[14].pressed || (gamepad.axes[0] < -0.3)){	//Flecha izquierda   axez 0
+		snake.xv = -1;
+		snake.yv = 0;
+	}else if(gamepad.buttons[13].pressed || (gamepad.axes[1] > 0.3)){	//Flecha abajo    axes 1
+		snake.xv = 0;
+		snake.yv = 1;
+	}else if(gamepad.buttons[15].pressed || (gamepad.axes[0] > 0.3)){	//Flecha derecha    axes 0
+		snake.xv = 1;
+		snake.yv = 0;
+	}
+
+	if(gamepad.buttons[1].pressed){
+		snake.death();
+	}
+
+	if(gamepad.buttons[0].pressed){
+		snake.grow();
+	}
+
+	if(gamepad.buttons[3].pressed){
+		sketch.newApple(snake);
+	}
+
+	if(gamepad.buttons[2].pressed){
+		switchColor();
+	}
+}
+
+function switchColor(){
+	currentColor++;
+	currentColor = currentColor % (snakeColors.length/2);
+
+	currentColor1 = snakeColors[currentColor*2];
+	currentColor2 = snakeColors[currentColor*2 + 1];
+}
 //Lleva la cuenta del tiempo transcurrido desde que empezó la partida
 function clock(){
 	time++;
@@ -127,5 +181,3 @@ function convertTime(time){
 
 	return(h + "h. " + m + "m. " + s + "s.");
 }
-
-
