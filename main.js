@@ -1,5 +1,8 @@
 var sketch = new Sketch(sketchWidth, sketchHeight);
 var snake = new Snake(0, 0, 0, 0);
+
+
+
 console.log(snake);
 
 document.addEventListener("keydown", keyPush);
@@ -41,9 +44,13 @@ function core(){
 	//Si la cabeza y la manzana están en la misma posición 
 	//se suma un punto
 	if(snake.x == sketch.apple.x && snake.y == sketch.apple.y){
+		let mySound = new sound("eat.mp3");
+		mySound.play();
 		snake.grow();
 		sketch.newApple(snake);
 	}
+
+	//if(snake.lives == 0)
 
 	//Actualiza las posiciones de la serpiente
 	snake.update();
@@ -131,7 +138,7 @@ function gamepadController(gamepad){
 	if(gamepad.buttons[12].pressed || (gamepad.axes[1] < -0.3)){	//Flecha arriba   axes 1
 		snake.xv = 0;
 		snake.yv = -1;
-	}else if(gamepad.buttons[14].pressed || (gamepad.axes[0] < -0.3)){	//Flecha izquierda   axez 0
+	}else if(gamepad.buttons[14].pressed || (gamepad.axes[0] < -0.3)){	//Flecha izquierda   axes 0
 		snake.xv = -1;
 		snake.yv = 0;
 	}else if(gamepad.buttons[13].pressed || (gamepad.axes[1] > 0.3)){	//Flecha abajo    axes 1
@@ -180,4 +187,19 @@ function convertTime(time){
 	let s = time%60;
 
 	return(h + "h. " + m + "m. " + s + "s.");
+}
+
+function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    this.sound.play();
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
 }
