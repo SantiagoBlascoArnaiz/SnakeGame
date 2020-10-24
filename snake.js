@@ -50,6 +50,9 @@ class Snake {
 			this.tail.push({x:this.x,y:this.y});
 		}
 
+		let mySound = new sound("dead.mp3");
+		mySound.play();
+
 		time = 0;
 	}
 	//Comprueba que en la posición indicada no se encuentra la serpiente 
